@@ -1,20 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
-
-import { 
-    Stitch,
+import {
     RemoteMongoClient,
     AnonymousCredential
 } from "mongodb-stitch-browser-sdk";
 
-const client = Stitch.initializeDefaultAppClient('rtfm-wysqi');
+import { StitchClient } from './src/credentials';
+import LoginPage from './src/LoginPage';
 
-const db = client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db('rtfm');
+const db = StitchClient.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db('rtfm');
 // TODO query the db to make sure we can
 
-const LoginPage = () =>   (<div>"login page!"</div>);
 const ViewDocPage = () => (<div>"view doc page!"</div>);
 const EditDocPage = () => (<div>"edit doc page!"</div>);
 
@@ -47,7 +44,7 @@ class DebugPage extends React.Component {
                 <div>
                     got {this.state.docs.length} docs:
                     <ul>
-                        {this.state.docs.map(doc => <li>{JSON.stringify(doc)}</li>)}
+                        {this.state.docs.map(doc => <li key={doc._id}>{JSON.stringify(doc)}</li>)}
                     </ul>
                 </div>
             );
@@ -73,10 +70,10 @@ const App = () => (
     </Router>
 );
 
-console.log('logging into stitch...');
-client.auth.loginWithCredential(new AnonymousCredential()).then(user => {
-    console.log('logged into stitch as', user);
+// console.log('logging into stitch...');
+// StitchClient.auth.loginWithCredential(new AnonymousCredential()).then(user => {
+    // console.log('logged into stitch as', user);
     ReactDOM.render(<App />, document.getElementById('reactRoot'));
-});
+// });
 
 console.log('hello from index.js!');
