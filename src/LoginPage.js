@@ -14,7 +14,7 @@ class LoginPage extends React.Component {
     // debugger;
     const cred = new GoogleRedirectCredential;
     cred.providerCapabilities = {};
-    StitchClient.auth.loginWithCredential(cred);
+    StitchClient.auth.loginWithRedirect(cred);
   }
 
   render() {
